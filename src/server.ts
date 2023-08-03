@@ -1,13 +1,14 @@
 import mongoose from "mongoose";
 import yargs from "yargs";
 import { ApolloServer } from "apollo-server";
-import { getUserInfo } from "./auth";
+// import { getUserInfo } from "./auth";
 import typeDefs from "./schema";
 import resolvers from "./resolvers";
+// import { Request } from "./types";
 
 const args = yargs.option("mongo-uri", {
   describe: "Mongo URI",
-  default: "mongodb://localhost:27017/movies",
+  default: "mongodb://127.0.0.1:27017/movies",
   type: "string",
   group: "Mongo",
 }).argv;
@@ -23,10 +24,10 @@ async function start() {
     await new ApolloServer({
       typeDefs,
       resolvers,
-      context: ({ req }) => ({
-        userInfo: getUserInfo(req.headers.authorization || ""),
-      }),
-    }).listen(3000);
+      // context: (req: Request) => ({
+      //   userInfo: getUserInfo(req.headers.authorization || ""),
+      // }),
+    }).listen(3001);
     console.log("GraphQl API running on port 3000.");
   } catch (err) {
     console.error(err);

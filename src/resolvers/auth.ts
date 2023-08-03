@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { LoginResponse, RegisterResponse, UserInfo, Context } from "../types";
+import { LoginResponse, RegisterResponse, UserInfo } from "../type";
 import { User, UserModel } from "../models";
 
 export async function register(_: void, args: any): Promise<RegisterResponse> {
@@ -15,9 +15,17 @@ export async function register(_: void, args: any): Promise<RegisterResponse> {
     password: hashedPassword,
   });
   await user.save();
+  const token = jwt.sign(
+    {
+      id: user._id,
+      username: user.username,
+    },
+    "secret",
+  );
   return {
     id: user._id,
     username: user.username,
+    token
   };
 }
 
@@ -45,14 +53,13 @@ export async function login(_: void, args: any): Promise<LoginResponse> {
 
 export async function currentUser(
   _: void,
-  _args: any,
-  ctx: Context,
+  _args: any
 ): Promise<UserInfo> {
-  const { userInfo } = ctx;
-  if (!userInfo) {
+  const { id } = _args;
+  if (!id) {
     throw new Error("Not authenticated!");
   }
-  const user: User | null = await UserModel.findOne({ _id: userInfo.id });
+  const user: User | null = await UserModel.findOne({ _id: id });
   if (!user) {
     throw new Error("Not authenticated!");
   }

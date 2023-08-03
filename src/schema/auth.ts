@@ -2,10 +2,11 @@ const typeDef = `
     type User {
         id: ID!
         username: String!
+        token: String!
     }
 
     type Query {
-        currentUser: User!
+        currentUser(id: ID!): User!
     }
 
     type LoginResponse {

@@ -1,4 +1,8 @@
-export interface RegisterResponse extends UserInfo {}
+export interface RegisterResponse {
+  id: string;
+  username: string;
+  token: string;
+}
 
 export interface LoginResponse {
   token: string;

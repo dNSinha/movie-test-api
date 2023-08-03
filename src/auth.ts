@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { UserInfo } from "./types";
+import { UserInfo } from "./type";
 
 export function getUserInfo(bearerToken: string): UserInfo | null {
   const token = bearerToken.split(" ")[1];
